@@ -10,7 +10,7 @@
 import Field from "./Field/Field.vue";
 import List from "./List/QuestionList.vue";
 import Menu from "./Menu/Menu.vue";
-// import {createQuize} from "../../modules/QuizeBuilder.js";
+import {createQuize} from "../../modules/QuizeBuilder.js";
 
 // TODO: Реализовать окно входа в режим создания викторины с вводом названия викторины
 

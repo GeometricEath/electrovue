@@ -15,7 +15,7 @@ function createQuize(questions) {
             })
             .ele('text', questions[i].question).up()
             //TODO: Релаизовать подстановку расширений и имен картинок
-            .ele('picture', 'img ' + questions[i].id) + ('.jpg').up()
+            .ele('picture', 'img ' + questions[i].id + '.jpg').up()
             .ele('answer', questions[i].answers[0]).up()
             .ele('answer', questions[i].answers[1]).up()
             .ele('answer', questions[i].answers[2]).up()
