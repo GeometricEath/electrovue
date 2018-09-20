@@ -64,7 +64,7 @@ export default {
       this.data = {
         question: "",
         true_answer: "",
-        img: "./src/assets/no-image-icon.png",
+        img: "./src/renderer/assets/no-image-icon.png",
         answers: []
       };
       this.$el.scrollIntoView(false);
@@ -82,7 +82,7 @@ export default {
       data: {
         question: "",
         true_answer: "",
-        img: "./src/assets/no-image-icon.png",
+        img: "./src/renderer/assets/no-image-icon.png",
         answers: []
       }
     };

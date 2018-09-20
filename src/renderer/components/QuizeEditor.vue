@@ -11,6 +11,7 @@ import Field from "./Field/Field.vue";
 import List from "./List/QuestionList.vue";
 import Menu from "./Menu/Menu.vue";
 import {createQuize} from "../../modules/QuizeBuilder.js";
+import {saveFile} from "../../modules/fileSistem.js";
 
 // TODO: Реализовать окно входа в режим создания викторины с вводом названия викторины
 
@@ -36,11 +37,12 @@ export default {
     },
     save() {
       let xmlData = createQuize(this.questions);
-      let link = document.createElement("a");
-      let blob = new Blob([xmlData], { type: "text/plain" });
-      link.href = window.URL.createObjectURL(blob);
-      link.download = "test.txt";
-      link.click();
+      saveFile(xmlData);
+      // let link = document.createElement("a");
+      // let blob = new Blob([xmlData], { type: "text/plain" });
+      // link.href = window.URL.createObjectURL(blob);
+      // link.download = "test.txt";
+      // link.click();
     },
   }
 };

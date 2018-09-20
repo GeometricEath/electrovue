@@ -1,6 +1,7 @@
 import builder from "xmlbuilder";
 
 function createQuize(questions) {
+    console.dir(questions);
     let obj = builder
         .create("root", { version: "1.0", encoding: "windows-1251" })
         .ele("questions")
@@ -21,19 +22,6 @@ function createQuize(questions) {
             .ele('answer', questions[i].answers[2]).up()
             .ele('answer', questions[i].answers[3]).up();
     }
-
-    // createQuestion = function () {
-    //     var obj = builder.begin()
-    //         .ele('question', { 'answer': '1', 'name': 'Question' + this.questionNum, 'timeout': '20' })
-    //         .ele('text', this.questionText).up()
-    //         // .ele('picture', "don\\med\\" + questionNum + ".jpg").up()
-    //         .ele('picture', this.picURL).up()
-    //         .ele('answer', this.allAnswers[0]).up()
-    //         .ele('answer', this.allAnswers[1]).up()
-    //         .ele('answer', this.allAnswers[2]).up()
-    //         .ele('answer', this.allAnswers[3]).up();
-    //     return obj;
-    // };
 
     obj
         .up()
