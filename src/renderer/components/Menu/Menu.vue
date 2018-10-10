@@ -1,6 +1,7 @@
 <template>
     <div class="menu">
     <button class="field_button" @click.stop="download">Сохранить</button>
+    <router-link to="/new_project">В начало</router-link>
     </div>
 </template>
 
