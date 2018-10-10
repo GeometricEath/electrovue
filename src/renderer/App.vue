@@ -5,11 +5,11 @@
 </template>
 
 <script>
-  export default {
-    name: 'electro-vue'
-  }
+export default {
+  name: "electro-vue"
+};
 </script>
 
 <style>
-  /* CSS */
+/* CSS */
 </style>

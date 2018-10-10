@@ -1,6 +1,7 @@
 <template>
-  <div class="app">
+  <div class="editor">
   <menus @save='save'></menus>
+  <div class="title">{{name}}</div>
   <list v-bind:questions="questions"></list>
   <field v-on:newQuestion='add'></field>
   </div>
@@ -10,15 +11,15 @@
 import Field from "./Field/Field.vue";
 import List from "./List/QuestionList.vue";
 import Menu from "./Menu/Menu.vue";
-import {createQuize} from "../../modules/QuizeBuilder.js";
-import {saveFile} from "../../modules/fileSistem.js";
+import { createQuize } from "../../modules/QuizeBuilder.js";
+import { saveFile } from "../../modules/fileSistem.js";
 
 // TODO: Реализовать окно входа в режим создания викторины с вводом названия викторины
 
 // this.$on('newQuestion', add);
 
 export default {
-  name: "app",
+  name: "quizeEditor",
   components: {
     field: Field,
     list: List,
@@ -29,6 +30,7 @@ export default {
       questions: []
     };
   },
+  props:['name'],
   methods: {
     add(evt) {
       // console.log(this.questions);
@@ -43,17 +45,20 @@ export default {
       // link.href = window.URL.createObjectURL(blob);
       // link.download = "test.txt";
       // link.click();
-    },
+    }
   }
 };
 </script>
 
 <style>
-.app {
+.editor {
   margin: 0 auto;
   padding-top: 48px;
   width: 800px;
   /* display: flex; */
   /* flex-direction: row; */
+}
+.title{
+  margin-top: 50px;
 }
 </style>
