@@ -12,7 +12,7 @@ function createQuize(questions) {
             {
                 'answer': questions[i].true_answer,
                 'name': 'Question' + questions[i].id,
-                'timeout': '20'
+                'timeout': questions[i].timeout||20,
             })
             .ele('text', questions[i].question).up()
             //TODO: Релаизовать подстановку расширений и имен картинок

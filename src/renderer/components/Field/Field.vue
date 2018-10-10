@@ -41,6 +41,10 @@
             </div>
             <input name="inp" class="field_answer" id="inp4" placeholder="Вариант ответа 4" type="text" spellcheck autocomplete="off" v-model="data.answers[3]">
         </div>
+        <div>
+            <input class="range-slider__range" type="range" value="20" min="10" max="60" v-model='data.timeout'>
+            <p class="timeout_value">{{data.timeout}}</p>
+        </div>
         <div class="field_control">
         <input type="submit" class="field_submit field_button" value="Отправить" >
         <button type="reset" class="field_button">Очистить</button>
@@ -49,6 +53,9 @@
 </template>
 
 <style>
+.timeout_value{
+    color: black;
+}
 </style>
 
 
@@ -65,7 +72,8 @@ export default {
         question: "",
         true_answer: "",
         img: "./src/renderer/assets/no-image-icon.png",
-        answers: []
+        answers: [],
+        timeout: 20,
       };
       this.$el.scrollIntoView(false);
     }
@@ -83,7 +91,8 @@ export default {
         question: "",
         true_answer: "",
         img: "./src/renderer/assets/no-image-icon.png",
-        answers: []
+        answers: [],
+        timeout:20,
       }
     };
   }
