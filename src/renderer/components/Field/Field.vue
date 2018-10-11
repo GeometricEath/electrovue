@@ -76,6 +76,10 @@ export default {
         timeout: 20,
       };
       this.$el.scrollIntoView(false);
+    },
+    openImage() {
+      let imageBuff = FS.openFile();
+      
     }
   },
   computed: {
