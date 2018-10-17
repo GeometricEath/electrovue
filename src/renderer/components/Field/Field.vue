@@ -2,7 +2,7 @@
     <form class="field" v-on:submit.prevent='save_Question'>
         <h2 class="field_header">Добавить вопрос</h2>
 
-        <img class="field_load_img" v-bind:src="data.img" >
+        <img class="field_load_img" v-bind:src="data.img" @click="openImage" >
 
         <textarea class="field_question" 
             name="question" 
@@ -61,6 +61,8 @@
 
 <script>
 import style from "../Field/field.css";
+import FileSistem from "../../../modules/fileSistem.js";
+let FS = new FileSistem;
 
 export default {
   name: "Field",
@@ -78,8 +80,8 @@ export default {
       this.$el.scrollIntoView(false);
     },
     openImage() {
-      let imageBuff = FS.openFile();
-      
+    //   let imageBuff = FS.openImg();
+      FS.openImg().then(blob=>{this.data.img=blob});
     }
   },
   computed: {
