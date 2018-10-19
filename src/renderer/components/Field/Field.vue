@@ -81,7 +81,9 @@ export default {
     },
     openImage() {
     //   let imageBuff = FS.openImg();
-      FS.openImg().then(blob=>{this.data.img=blob});
+      FS.openImg()
+      .then(blobURL=>{this.data.img=blobURL})
+      .catch(er=>console.error(er));
     }
   },
   computed: {

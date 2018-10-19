@@ -17,9 +17,9 @@ export default class FileSistem {
     openFile() {
         let buff;
         remote.dialog.showOpenDialog(path => {
-            fs.readFile(path, (err, data) =>{
+            fs.readFile(path, (err, data) => {
                 if (err) {
-                    alert ('Ошибка при чтении файла: ' + err.message);
+                    alert('Ошибка при чтении файла: ' + err.message);
                     return
                 }
                 buff = data;
@@ -28,24 +28,31 @@ export default class FileSistem {
         console.log("data: " + buff)
         return buff
     }
-   openImg() {
+    openImg() {
         // let buff = ;
-        return new Promise(function(resolve, reject){
+        return new Promise(function (resolve, reject) {
             remote.dialog.showOpenDialog(path => {
                 console.log(path);
-                fs.readFile(path[0], (err, data) =>{
+                fs.readFile(path[0], (err, data) => {
                     if (err) {
                         console.log('Ошибка при чтении файла: ' + err.message);
                         return
                     }
                     // console.log("data: " + data);
-                    data = new Blob(data, {type: 'image/png'});
+                    // let arrayBuffer = new ArrayBuffer(data.length);
+                    // let view = new Uint8Array(arrayBuffer);
+                    // for (let i = 0; data.length; ++i) {
+                    //     // arrayBuffer[i] = view[i];
+                    //     view[i] = data[i];
+                    //     // console.dir(arrayBuffer[i]);
+                    // }
+                    // let blob = new Blob(arrayBuffer, { type: 'image/png' });
                     resolve(window.URL.createObjectURL(data));
                 })
             })
         })
         // let buff;
-        
+
         // console.log(buff);
         // return buff
     }
