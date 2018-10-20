@@ -1,19 +1,41 @@
 import path from 'path'
 import { remote } from 'electron'
 import fs from 'fs'
+import { createQuize } from "../modules/QuizeBuilder.js";
+
 
 export default class FileSistem {
     constructor() {
 
     }
-    saveFile(data) {
-        remote.dialog.showSaveDialog(filename => {
-            fs.writeFile(filename, data, (err) => {
-                if (err) console.error(err.message);
-                console.log('Файл сохранен');
-            });
+    saveProject(questionsArray) {
+        let xmlData = createQuize(questionsArray);
+        let projectPath = remote.dialog.showOpenDialog({
+            properties: ['openDirectory']
+        });
+        projectPath = projectPath.toString();
+        let xmlPath = path.join(projectPath, 'quize.xml')
+        this.saveFile(xmlPath, xmlData);
+        this.readUrlBlob(questionsArray[0].img)
+        .then(data => this.saveFile(path.join(projectPath, 'img0.png'), data));
+        
+        // console.log(projectPath);
+        // console.log(xmlPath);
+
+
+    }
+    saveFile(path, data) {
+        fs.writeFile(path, data, (err) => {
+            if (err) console.error(err.message);
+            console.log('Файл сохранен');
         });
     }
+    // saveImg(url, path) {
+    //     let arryBuffer = this.readUrlBlob(url);
+    //     fs.writeFile(path, arryBuffer, (err) => {
+    //         if (err) console.error(err.message)
+    //     });
+    // }
     openFile() {
         let buff;
         remote.dialog.showOpenDialog(path => {
@@ -29,7 +51,6 @@ export default class FileSistem {
         return buff
     }
     openImg() {
-        // let buff = ;
         return new Promise(function (resolve, reject) {
             remote.dialog.showOpenDialog(path => {
                 console.log(path);
@@ -38,24 +59,35 @@ export default class FileSistem {
                         console.log('Ошибка при чтении файла: ' + err.message);
                         return
                     }
-                    // console.log("data: " + data);
-                    // let arrayBuffer = new ArrayBuffer(data.length);
-                    // let view = new Uint8Array(arrayBuffer);
-                    // for (let i = 0; data.length; ++i) {
-                    //     // arrayBuffer[i] = view[i];
-                    //     view[i] = data[i];
-                    //     // console.dir(arrayBuffer[i]);
-                    // }
-                    // let blob = new Blob(arrayBuffer, { type: 'image/png' });
-                    resolve(window.URL.createObjectURL(data));
+                    let arrayBuffer = [];
+                    arrayBuffer.push(data);
+                    let blob = new Blob(arrayBuffer, { type: 'image/png' });
+                    resolve(window.URL.createObjectURL(blob));
                 })
             })
         })
-        // let buff;
+    }
+    readUrlBlob(url) {
+        return new Promise(function (resolve, reject) {
+            let xhr = new XMLHttpRequest();
+            xhr.open('GET', url, true);
+            xhr.responseType = 'blob';
+            xhr.onload = function (e) {
+                if (this.status == 200) {
+                    let blob = this.response;
+                    let reader = new FileReader();
+                    reader.readAsArrayBuffer(blob);
+                    reader.onloadend = (evt => {
+                        let buffer = Buffer.from( new Uint8Array(evt.target.result) )
+                        resolve(buffer);
+                    });
+                }
+            };
+            xhr.send();
+        })
 
-        // console.log(buff);
-        // return buff
+
+        
     }
 }
 
-// export {saveFile};

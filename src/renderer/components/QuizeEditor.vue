@@ -11,11 +11,8 @@
 import Field from "./Field/Field.vue";
 import List from "./List/QuestionList.vue";
 import Menu from "./Menu/Menu.vue";
-import {createQuize} from "../../modules/QuizeBuilder.js";
 import FileSistem from "../../modules/fileSistem.js";
 let FS = new FileSistem;
-
-// TODO: Реализовать окно входа в режим создания викторины с вводом названия викторины
 
 // this.$on('newQuestion', add);
 
@@ -39,8 +36,8 @@ export default {
       this.questions.push(evt);
     },
     save() {
-      let xmlData = createQuize(this.questions);
-      FS.saveFile(xmlData);
+      FS.saveProject(this.questions);
+      
       // let link = document.createElement("a");
       // let blob = new Blob([xmlData], { type: "text/plain" });
       // link.href = window.URL.createObjectURL(blob);
