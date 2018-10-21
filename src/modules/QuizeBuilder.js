@@ -1,6 +1,6 @@
 import builder from "xmlbuilder";
 
-function createQuize(questions) {
+function createQuize(questions, quizName) {
     console.dir(questions);
     let obj = builder
         .create("root", { version: "1.0", encoding: "windows-1251" })
@@ -15,8 +15,7 @@ function createQuize(questions) {
                 'timeout': questions[i].timeout||20,
             })
             .ele('text', questions[i].question).up()
-            //TODO: Релаизовать подстановку расширений и имен картинок
-            .ele('picture', 'img' + questions[i].path).up()
+            .ele('picture', questions[i].path).up()
             .ele('answer', questions[i].answers[0]).up()
             .ele('answer', questions[i].answers[1]).up()
             .ele('answer', questions[i].answers[2]).up()
@@ -27,7 +26,7 @@ function createQuize(questions) {
         .up()
         .up()
         .ele("quizes")
-        .ele("quiz", { name: "Quiz", tossAnswers: "true" })
+        .ele("quiz", { name: quizName, tossAnswers: "true" })
         .ele(cunk());
     function cunk() {
         var ar = [];

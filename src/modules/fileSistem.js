@@ -8,23 +8,29 @@ export default class FileSistem {
     constructor() {
 
     }
-    saveProject(questionsArray) {
-        let projectPath = remote.dialog.showOpenDialog({
+    saveProject(questionsArray, quizeName) {
+        let outputPath = remote.dialog.showOpenDialog({
             properties: ['openDirectory']
         });
-        projectPath = projectPath.toString();
-
-        let xmlData = createQuize(questionsArray);
-        let xmlPath = path.join(projectPath, 'quize.xml')
-        this.saveFile(xmlPath, xmlData);
+        outputPath = outputPath.toString();
+        let projectPath = path.join(outputPath, quizeName);
+        fs.mkdir(projectPath, er => { 
+            console.log('Директория создана')
+            if (er) console.error(er.message) });
 
         questionsArray.forEach(element => {
             this.readUrlBlob(element.img)
                 .then(data => {
                     let extension = mime.getExtension(data.type);
-                    this.saveFile(path.join(projectPath, 'img' + element.id + '.' + extension), data.buffer);
+                    let imgName = 'img' + element.id + '.' + extension;
+                    element.path = path.join('don', quizeName, imgName)
+                    this.saveFile(path.join(projectPath, imgName), data.buffer);
                 });
         });
+
+        let xmlData = createQuize(questionsArray, quizeName);
+        let xmlPath = path.join(projectPath, 'quize.xml')
+        this.saveFile(xmlPath, xmlData);
 
         // console.log(projectPath);
         // console.log(xmlPath);
@@ -32,7 +38,7 @@ export default class FileSistem {
     saveFile(path, data) {
         fs.writeFile(path, data, (err) => {
             if (err) console.error(err.message);
-            console.log('Файл сохранен');
+            console.log('Файл сохранен: ' + path);
         });
     }
     // saveImg(url, path) {
