@@ -2,6 +2,7 @@
     <div class="menu">
     <button class="field_button" @click.stop="download">Сохранить</button>
     <router-link to="/new_project">В начало</router-link>
+    <span class="menu_totalTime">Суммарное время: {{totalTime}}</span>
     </div>
 </template>
 
@@ -9,12 +10,13 @@
 import style from "./menu.css";
 // import XML from "xml";
 
-
 export default {
   data() {
     return {};
   },
-  
+  props: {
+    totalTime: String,
+  },
   methods: {
     download: function() {
       // var example4 = [
@@ -36,9 +38,7 @@ export default {
       // link.click();
 
       this.$emit("save");
-    },
-
-
+    }
   }
 };
 </script>

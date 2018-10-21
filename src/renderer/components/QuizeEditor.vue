@@ -1,6 +1,6 @@
 <template>
   <div class="editor">
-  <menus @save='save'></menus>
+  <menus @save='save' v-bind:totalTime="totalTime"></menus>
   <div class="title">{{name}}</div>
   <list v-bind:questions="questions"></list>
   <field v-on:newQuestion='add'></field>
@@ -12,7 +12,7 @@ import Field from "./Field/Field.vue";
 import List from "./List/QuestionList.vue";
 import Menu from "./Menu/Menu.vue";
 import FileSistem from "../../modules/fileSistem.js";
-let FS = new FileSistem;
+let FS = new FileSistem();
 
 // this.$on('newQuestion', add);
 
@@ -28,7 +28,25 @@ export default {
       questions: []
     };
   },
-  props:['name'],
+  props: ["name"],
+  computed: {
+    totalTime() {
+      let totalTime = 0;
+      let minutes = 0;
+      let seconds = 0;
+      let result = 0;
+      this.questions.forEach(element => {
+        totalTime = totalTime + parseInt(element.timeout);
+      });
+      result = totalTime + ' сек';
+      if (totalTime > 60) {
+        minutes = Math.floor(totalTime / 60);
+        seconds = totalTime % 60;
+        result = `${minutes} мин ${seconds} сек`;
+      }
+      return result;
+    }
+  },
   methods: {
     add(evt) {
       // console.log(this.questions);
@@ -37,14 +55,13 @@ export default {
     },
     save() {
       FS.saveProject(this.questions, this.name);
-      
+
       // let link = document.createElement("a");
       // let blob = new Blob([xmlData], { type: "text/plain" });
       // link.href = window.URL.createObjectURL(blob);
       // link.download = "test.txt";
       // link.click();
-    },
-   
+    }
   }
 };
 </script>
@@ -57,7 +74,7 @@ export default {
   /* display: flex; */
   /* flex-direction: row; */
 }
-.title{
+.title {
   margin-top: 50px;
 }
 </style>
