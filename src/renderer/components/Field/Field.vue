@@ -53,8 +53,8 @@
 </template>
 
 <style>
-.timeout_value{
-    color: black;
+.timeout_value {
+  color: black;
 }
 </style>
 
@@ -62,45 +62,48 @@
 <script>
 import style from "../Field/field.css";
 import FileSistem from "../../../modules/fileSistem.js";
-let FS = new FileSistem;
+let FS = new FileSistem();
 
 export default {
   name: "Field",
   methods: {
     save_Question: function(event) {
-    //   event.preventDefault();
+      //   event.preventDefault();
       this.$emit("newQuestion", this.data);
       this.data = {
         question: "",
         true_answer: "",
-        img: "./src/renderer/assets/no-image-icon.png",
+        img: "static/assets/no-image-icon.png",
         answers: [],
-        timeout: 20,
+        timeout: 20
       };
       this.$el.scrollIntoView(false);
     },
     openImage() {
-    //   let imageBuff = FS.openImg();
+      //   let imageBuff = FS.openImg();
       FS.openImg()
-      .then(blobURL=>{this.data.img=blobURL})
-      .catch(er=>console.error(er));
+        .then(blobURL => {
+          this.data.img = blobURL;
+        })
+        .catch(er => console.error(er));
     }
   },
   computed: {
     questionLenght: function() {
-        return this.data.question.length
+      return this.data.question.length;
     }
     //TODO: ограничение длины вопроса 120 символов
   },
 
   data() {
     return {
+      noIconPng: "static/assets/no-image-icon.png",
       data: {
         question: "",
         true_answer: "",
-        img: "./src/renderer/assets/no-image-icon.png",
+        img: "static/assets/no-image-icon.png",
         answers: [],
-        timeout:20,
+        timeout: 20
       }
     };
   }
