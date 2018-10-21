@@ -1,7 +1,7 @@
 <template>
     <div class="menu">
     <button class="field_button" @click.stop="download">Сохранить</button>
-    <router-link to="/new_project">В начало</router-link>
+    <button class="field_button"  @click="$router.push({name: 'landing'})">В начало</button>
     <span class="menu_totalTime">Суммарное время: {{totalTime}}</span>
     </div>
 </template>
