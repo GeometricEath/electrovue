@@ -1,7 +1,7 @@
-import path from 'path'
-import { remote } from 'electron'
-import fs from 'fs/promises'
+import path from 'path';
+import { remote } from 'electron';
 import { createQuize } from "../modules/QuizeBuilder.js";
+const fs = require('fs').promises;
 const mime = require('mime/lite');
 
 export default class FileSistem {
