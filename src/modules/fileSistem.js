@@ -1,6 +1,6 @@
 import path from 'path'
 import { remote } from 'electron'
-import fs from 'fs'
+import fs from 'fs/promises'
 import { createQuize } from "../modules/QuizeBuilder.js";
 const mime = require('mime/lite');
 
@@ -8,32 +8,57 @@ export default class FileSistem {
     constructor() {
 
     }
-    sp(questionsArray, quizeName){
-        
-    questionsArray.reduce(function(sequence, qiestionPromise) {
-      // Используем редуцирование что бы связать в очередь обещания,
-      // и добавить каждую главу на страницу
-      return sequence.then(function() {
-        return qiestionPromise;
-      }).then(function(chapter) {
-        addHtmlToPage(chapter.html);
-      });
-    }, Promise.resolve());
+    sp(questionsArray, quizeName) {
+        let outputPath = remote.dialog.showOpenDialog({
+            properties: ['openDirectory']
+        });
+        outputPath = outputPath.toString();
+        let projectPath = path.join(outputPath, quizeName);
 
+        fs.mkdir(projectPath, er => {
+            console.log('Директория создана')
+            if (er) console.error(er.message)
+        }).then(() => {
+            return this.readUrlBlob(url)
+        })
+            .then(() => {
+                questionsArray.reduce(function (sequence, qiestion) {
+                    return sequence.then(() => {
+                        return this.readUrlBlob(qiestion.img)
+                    }).then((obj) => {
+                        let extension = mime.getExtension(obj.type);
+                        let imgName = 'img' + qu.id + '.' + extension;
+                        element.path = path.join('don', quizeName, imgName)
+                    })
+                })
+            })
+
+        questionsArray.reduce(function (sequence, qiestionPromise) {
+            // Используем редуцирование что бы связать в очередь обещания,
+            // и добавить каждую главу на страницу
+            return sequence.then(function () {
+                resolve(qiestionPromise);
+            }).then(question => {
+                addHtmlToPage(chapter.html);
+            });
+        }, Promise.resolve());
     }
+
     saveProject(questionsArray, quizeName) {
         let outputPath = remote.dialog.showOpenDialog({
             properties: ['openDirectory']
         });
         outputPath = outputPath.toString();
         let projectPath = path.join(outputPath, quizeName);
-        
 
-        fs.mkdir(projectPath, er => { 
+
+        fs.mkdir(projectPath, er => {
             console.log('Директория создана')
-            if (er) console.error(er.message) });
+            if (er) console.error(er.message)
+        });
 
         questionsArray.forEach(element => {
+            console.log(element.img.type);
             this.readUrlBlob(element.img)
                 .then(data => {
                     let extension = mime.getExtension(data.type);
@@ -53,7 +78,7 @@ export default class FileSistem {
     saveFile(path, data) {
         fs.writeFile(path, data, (err) => {
             if (err) console.error(err.message);
-            console.log('Файл сохранен: ' + path);
+            console.log('Файл сохранен: ' + path); 42
         });
     }
     // saveImg(url, path) {
@@ -110,7 +135,7 @@ export default class FileSistem {
                         let buffer = Buffer.from(new Uint8Array(evt.target.result))
                         resolve({ buffer: buffer, type: blob.type });
                     });
-                }
+                } else { reject(Error(xhr.statusText)) }
             };
             xhr.send();
         })
