@@ -10,11 +10,11 @@ export default class FileSistem {
     }
     sp(questionsArray, quizeName){
         
-    questionsArray.reduce(function(sequence, chapterPromise) {
+    questionsArray.reduce(function(sequence, qiestionPromise) {
       // Используем редуцирование что бы связать в очередь обещания,
       // и добавить каждую главу на страницу
       return sequence.then(function() {
-        return chapterPromise;
+        return qiestionPromise;
       }).then(function(chapter) {
         addHtmlToPage(chapter.html);
       });
