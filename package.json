@@ -1,5 +1,5 @@
 {
-  "name": "electro-vue",
+  "name": "Quiz_Builder",
   "version": "0.1.1",
   "author": "Geometr <geo.fsv.p@gmail.com>",
   "description": "An electron-vue project",
@@ -17,7 +17,7 @@
     "postinstall": ""
   },
   "build": {
-    "productName": "Quize Builder",
+    "productName": "Quiz Builder",
     "appId": "electro",
     "directories": {
       "output": "build"

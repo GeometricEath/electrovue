@@ -8,12 +8,27 @@ export default class FileSistem {
     constructor() {
 
     }
+    sp(questionsArray, quizeName){
+        
+    questionsArray.reduce(function(sequence, chapterPromise) {
+      // Используем редуцирование что бы связать в очередь обещания,
+      // и добавить каждую главу на страницу
+      return sequence.then(function() {
+        return chapterPromise;
+      }).then(function(chapter) {
+        addHtmlToPage(chapter.html);
+      });
+    }, Promise.resolve());
+
+    }
     saveProject(questionsArray, quizeName) {
         let outputPath = remote.dialog.showOpenDialog({
             properties: ['openDirectory']
         });
         outputPath = outputPath.toString();
         let projectPath = path.join(outputPath, quizeName);
+        
+
         fs.mkdir(projectPath, er => { 
             console.log('Директория создана')
             if (er) console.error(er.message) });
