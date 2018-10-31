@@ -15,33 +15,31 @@ export default class FileSistem {
         outputPath = outputPath.toString();
         let projectPath = path.join(outputPath, quizeName);
 
-        fs.mkdir(projectPath, er => {
-            console.log('Директория создана')
-            if (er) console.error(er.message)
-        }).then(() => {
+        fs.mkdir(projectPath)
+        .then(() => {
             return this.readUrlBlob(url)
         })
             .then(() => {
-                questionsArray.reduce(function (sequence, qiestion) {
+                questionsArray.reduce(function (sequence, question) {
                     return sequence.then(() => {
                         return this.readUrlBlob(qiestion.img)
                     }).then((obj) => {
                         let extension = mime.getExtension(obj.type);
-                        let imgName = 'img' + qu.id + '.' + extension;
-                        element.path = path.join('don', quizeName, imgName)
-                    })
-                })
+                        let imgName = 'img' + question.id + '.' + extension;
+                        question.path = path.join('don', quizeName, imgName);
+                        return fs.writeFile(path.join(projectPath, imgName), obj.buffer);
+                    }).then(() => {
+                        console.log('saved' + question.img);
+                    });
+                }, Promise.resolve());
+            }).then(() => {
+                let xmlData = createQuize(questionsArray, quizeName);
+                let xmlPath = path.join(projectPath, 'quize.xml')
+                fs.writeFile(xmlPath, xmlData);
+            }).cath((err)=>{
+                console.log(err);
             })
 
-        questionsArray.reduce(function (sequence, qiestionPromise) {
-            // Используем редуцирование что бы связать в очередь обещания,
-            // и добавить каждую главу на страницу
-            return sequence.then(function () {
-                resolve(qiestionPromise);
-            }).then(question => {
-                addHtmlToPage(chapter.html);
-            });
-        }, Promise.resolve());
     }
 
     saveProject(questionsArray, quizeName) {
@@ -78,7 +76,7 @@ export default class FileSistem {
     saveFile(path, data) {
         fs.writeFile(path, data, (err) => {
             if (err) console.error(err.message);
-            console.log('Файл сохранен: ' + path); 42
+            console.log('Файл сохранен: ' + path);
         });
     }
     // saveImg(url, path) {
