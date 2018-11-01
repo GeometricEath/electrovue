@@ -1,8 +1,11 @@
 import path from 'path';
 import { remote } from 'electron';
 import { createQuize } from "../modules/QuizeBuilder.js";
-const fs = require('fs').promises;
+const fs = require('fs');
+const util = require('util');
 const mime = require('mime/lite');
+const writeFile = util.promisify(fs.writeFile);
+const mkdir = util.promisify(fs.mkdir);
 
 export default class FileSistem {
     constructor() {
@@ -15,30 +18,55 @@ export default class FileSistem {
         outputPath = outputPath.toString();
         let projectPath = path.join(outputPath, quizeName);
 
-        fs.mkdir(projectPath)
-        .then(() => {
-            return this.readUrlBlob(url)
-        })
+        Promise.all(questionsArray.map())
+
+        mkdir(projectPath)
             .then(() => {
-                questionsArray.reduce(function (sequence, question) {
+                console.log('Папка создана ' + projectPath);
+                function sequencer(sequence, question){
                     return sequence.then(() => {
-                        return this.readUrlBlob(qiestion.img)
-                    }).then((obj) => {
+                        return this.readUrlBlob(question.img);
+                        
+                    }).catch((er)=>{
+                        console.error('Ошибка блоб ' + er);
+                    })
+                    .then((obj) => {
                         let extension = mime.getExtension(obj.type);
                         let imgName = 'img' + question.id + '.' + extension;
                         question.path = path.join('don', quizeName, imgName);
-                        return fs.writeFile(path.join(projectPath, imgName), obj.buffer);
+                        return writeFile(path.join(projectPath, imgName), obj.buffer);
                     }).then(() => {
-                        console.log('saved' + question.img);
+                        console.log('Saved ' + question.img);
                     });
-                }, Promise.resolve());
-            }).then(() => {
-                let xmlData = createQuize(questionsArray, quizeName);
-                let xmlPath = path.join(projectPath, 'quize.xml')
-                fs.writeFile(xmlPath, xmlData);
-            }).cath((err)=>{
-                console.log(err);
-            })
+                }
+                // sequencer.bind(this);
+                // questionsArray.reduce(function (sequence, question) {
+                questionsArray.reduce(sequencer.bind(this) 
+                // return sequence.then(() => {
+                    //     console.log(readUrlBlob);
+                    //     let objBuff = readUrlBlob(question.img);
+                    //     resolve(objBuff);
+                    // }).catch((er)=>{
+                    //     console.log('Ошибка блоб ' + er);
+                    // })
+                    // .then((obj) => {
+                //         let extension = mime.getExtension(obj.type);
+                //         let imgName = 'img' + question.id + '.' + extension;
+                //         question.path = path.join('don', quizeName, imgName);
+                //         return writeFile(path.join(projectPath, imgName), obj.buffer);
+                //     }).then(() => {
+                //         console.log('saved' + question.img);
+                //     });
+                , Promise.resolve()
+                );
+            }).then(()=>console.log('End'));
+            // .then(() => {
+            //     let xmlData = createQuize(questionsArray, quizeName);
+            //     let xmlPath = path.join(projectPath, 'quize.xml')
+            //     return writeFile(xmlPath, xmlData);
+            // }).cath((err) => {
+            //     console.log('Ошибка! ' + err);
+            // })
 
     }
 
@@ -131,6 +159,7 @@ export default class FileSistem {
                     reader.readAsArrayBuffer(blob);
                     reader.onloadend = (evt => {
                         let buffer = Buffer.from(new Uint8Array(evt.target.result))
+                        console.log('Чтение блоба' + url);
                         resolve({ buffer: buffer, type: blob.type });
                     });
                 } else { reject(Error(xhr.statusText)) }
