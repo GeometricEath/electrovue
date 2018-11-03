@@ -1,6 +1,7 @@
 import path from 'path';
 import { remote } from 'electron';
 import { createQuize } from "../modules/QuizeBuilder.js";
+import parser from './xmlparser'
 const fs = require('fs');
 const util = require('util');
 const mime = require('mime/lite');
@@ -106,8 +107,7 @@ export default class FileSistem {
                 console.log(path);
                 fs.readFile(path[0], (err, data) => {
                     if (err) {
-                        console.log('Ошибка при чтении файла: ' + err.message);
-                        return
+                        reject('Ошибка при чтении img ' + err);
                     }
                     let arrayBuffer = [];
                     arrayBuffer.push(data);
@@ -115,6 +115,22 @@ export default class FileSistem {
                     let blob = new Blob(arrayBuffer, { type: mimeType });
                     console.log(blob.type);
                     resolve(window.URL.createObjectURL(blob));
+                })
+            })
+        })
+    }
+    openQuiz() {
+        return new Promise(function (resolve, reject) {
+            remote.dialog.showOpenDialog(path => {
+                console.log(path);
+                fs.readFile(path[0], (err, data) => {
+                    if (err) reject('Ошибка при чтении img ' + err);
+                    parser.parseXML(data)
+                    .then((qustions)=>{
+                        console.log(qustions);
+                        resolve(qustions);
+
+                    })
                 })
             })
         })
