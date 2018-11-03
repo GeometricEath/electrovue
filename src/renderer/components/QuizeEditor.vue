@@ -54,7 +54,7 @@ export default {
       this.questions.push(evt);
     },
     save() {
-      FS.sp(this.questions, this.name);
+      FS.saveProject(this.questions, this.name);
 
       // let link = document.createElement("a");
       // let blob = new Blob([xmlData], { type: "text/plain" });
