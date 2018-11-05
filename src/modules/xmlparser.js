@@ -11,16 +11,19 @@ class Parser {
                 if (err) reject(err);
                 console.dir(result);
                 let json = result.root.questions[0].group[0].question;
+                let quizName = result.root.quizes["0"].quiz["0"].$.name;
+                let id = 0;
                 let questions = json.map((question) => {
                     let newQestion = {}
-                    newQestion.true_answer = question[i].$.answer;
-                    newQestion.timeout = question[i].$.timeout;
-                    newQestion.pic_path = question[i].picture[0];
-                    newQestion.question = question[i].text[0];
-                    newQestion.answers = question[i].answer;
-                    newQestion.id = i;
+                    newQestion.true_answer = question.$.answer;
+                    newQestion.timeout = question.$.timeout;
+                    newQestion.pic_path = question.picture[0];
+                    newQestion.question = question.text[0];
+                    newQestion.answers = question.answer;
+                    newQestion.id = id++;
+                    return newQestion;
                 })
-                resolve(questions);
+                resolve({questions: questions, name: quizName });
             })
         })
             .catch((er) => console.error('Ошибка парсинга ' + er))

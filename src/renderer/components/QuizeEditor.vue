@@ -2,7 +2,7 @@
   <div class="editor">
   <menus @save='save' v-bind:totalTime="totalTime"></menus>
   <div class="title">{{name}}</div>
-  <list v-bind:questions="questions"></list>
+  <list v-bind:questionsArray="questionsArray"></list>
   <field v-on:newQuestion='add'></field>
   </div>
 </template>
@@ -25,20 +25,34 @@ export default {
   },
   data() {
     return {
-      questions: []
+      questionsArray: []
     };
   },
-  props: ["name"],
+  created(){
+    // `this` указывает на экземпляр vm
+    // console.log("Значение a: " + this.a);
+    // questionsArray.map()
+  },
+  props: {
+    name: String,
+    questions: {
+      type: Object,
+      default: () => {
+        console.log("questions objec default");
+        return {};
+      }
+    }
+  },
   computed: {
     totalTime() {
       let totalTime = 0;
       let minutes = 0;
       let seconds = 0;
       let result = 0;
-      this.questions.forEach(element => {
+      this.questionsArray.forEach(element => {
         totalTime = totalTime + parseInt(element.timeout);
       });
-      result = totalTime + ' сек';
+      result = totalTime + " сек";
       if (totalTime > 60) {
         minutes = Math.floor(totalTime / 60);
         seconds = totalTime % 60;
@@ -49,12 +63,12 @@ export default {
   },
   methods: {
     add(evt) {
-      // console.log(this.questions);
-      evt.id = this.questions.length;
-      this.questions.push(evt);
+      // console.log(this.questionsArray);
+      evt.id = this.questionsArray.length;
+      this.questionsArray.push(evt);
     },
     save() {
-      FS.saveProject(this.questions, this.name);
+      FS.saveProject(this.questionsArray, this.name);
 
       // let link = document.createElement("a");
       // let blob = new Blob([xmlData], { type: "text/plain" });

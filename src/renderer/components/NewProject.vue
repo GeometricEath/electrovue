@@ -4,17 +4,12 @@
         <div class="select__title" v-if="step==1">
             <h1>Придумайте короткое название для викторины</h1>
             <input type="text" name="title" v-model="title">
-            <button @click="$router.push({name: 'editor', params: {name: title}})">Продолжить</button>
+            <button @click="openEditor">Продолжить</button>
         </div>
-        <!-- <div class="select__folder" v-if="step==2">
-            <button @click="$router.push({name: 'editor', params: {name: title}})">Начать props</button>
-        </div> -->
     </div>
 </template>
 
 <script>
-const { dialog } = require("electron").remote;
-
 export default {
   data() {
     return {
@@ -24,6 +19,9 @@ export default {
     };
   },
   methods: {
+    openEditor(){
+      this.$router.push({name: 'editor', params: {name: this.title}});
+    }
     // next() {
     //   this.step += 1;
     // },

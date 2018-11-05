@@ -126,9 +126,9 @@ export default class FileSistem {
                 fs.readFile(path[0], (err, data) => {
                     if (err) reject('Ошибка при чтении img ' + err);
                     parser.parseXML(data)
-                    .then((qustions)=>{
-                        console.log(qustions);
-                        resolve(qustions);
+                    .then((quiz)=>{
+                        console.log(quiz);
+                        resolve(quiz);
 
                     })
                 })
