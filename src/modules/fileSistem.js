@@ -124,11 +124,11 @@ export default class FileSistem {
             remote.dialog.showOpenDialog(path => {
                 console.log(path);
                 fs.readFile(path[0], (err, data) => {
-                    if (err) reject('Ошибка при чтении img ' + err);
+                    if (err) reject('Ошибка при чтении xml ' + err);
                     parser.parseXML(data)
                     .then((quiz)=>{
                         console.log(quiz);
-                        resolve(quiz);
+                        resolve (quiz);
 
                     })
                 })

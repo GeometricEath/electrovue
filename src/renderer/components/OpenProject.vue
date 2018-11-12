@@ -17,13 +17,14 @@ export default {
   methods: {
     open() {
       FS.openQuiz()
-        .then(() => console.log("Переход в QizeEditor"))
-        .then(quiz => {
+        .then((quiz) => {
+          console.log('Open quiz data after parse: ' + quiz);
           this.$router.push({
             name: "editor",
-            params: quiz
+            params: {questions: quiz.questions, name: 'Test props'}
           });
         })
+        .then(() => console.log("Переход в QizeEditor"))
         .catch(err => {
           console.error("Ошибка чтения xml " + err);
         });
