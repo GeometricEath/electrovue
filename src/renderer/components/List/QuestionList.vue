@@ -21,7 +21,7 @@
                     <span class="question-answer">{{answer}}</span>
                     </p>
                 <div class="question-control" >
-                    <button class="field_button" @click.stop="edit(index)">Редактировать</button>
+                    <button class="field_button" @click.stop="edit(index, $event)">Редактировать</button>
                     <button class="field_button" @click.stop="delite(index)">Удалить</button>
                 </div>
             </div>
@@ -62,8 +62,11 @@ export default {
         }
       }
     },
-    edit(id) {
+    edit(id, evt) {
       console.log("hoocked " + id);
+      let target = evt.target.closest('.questions');
+      console.dir(target);
+      // this.questions[id].question = 'test';
     },
     delite(id) {
       this.questions.splice(id, 1);
