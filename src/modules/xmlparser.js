@@ -5,6 +5,10 @@ class Parser {
 
     }
     parseXML(xml) {
+        // TODO: Реализовать проверку кодировки и приведение к utf8
+        // TODO: Реализовать замену адреса картинки на относительные от папки xml
+        // Добавить предупреждение при отсусутсвии картинок и возможность вручную указать папку
+        
         xml = iconv.encode(iconv.decode(xml, 'win1251'), 'utf8');
         return new Promise((resolve, reject) => {
             parser.parseString(xml, (err, result) => {

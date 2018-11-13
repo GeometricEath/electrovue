@@ -1,6 +1,6 @@
 <template>
     <div class="list">
-        <div class="question" 
+        <div class="questions" 
             v-for="(item, index) in questions" 
             v-bind:key="item.id"
             @click="expand"
@@ -45,7 +45,7 @@ export default {
   },
   props: ["questions"],
   computed: {
-   
+  
   },
   methods: {
     expand(event) {
