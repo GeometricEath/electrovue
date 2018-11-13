@@ -8,7 +8,7 @@ class Parser {
         // TODO: Реализовать проверку кодировки и приведение к utf8
         // TODO: Реализовать замену адреса картинки на относительные от папки xml
         // Добавить предупреждение при отсусутсвии картинок и возможность вручную указать папку
-        
+
         xml = iconv.encode(iconv.decode(xml, 'win1251'), 'utf8');
         return new Promise((resolve, reject) => {
             parser.parseString(xml, (err, result) => {
@@ -18,7 +18,7 @@ class Parser {
                 let quizName = result.root.quizes["0"].quiz["0"].$.name;
                 let id = 0;
                 let questions = json.map((question) => {
-                    let newQestion = {}
+                    let newQestion = {};
                     newQestion.true_answer = question.$.answer;
                     newQestion.timeout = question.$.timeout;
                     newQestion.pic_path = question.picture[0];

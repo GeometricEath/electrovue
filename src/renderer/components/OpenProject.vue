@@ -21,7 +21,7 @@ export default {
           console.log('Open quiz data after parse: ' + quiz);
           this.$router.push({
             name: "editor",
-            params: {questions: quiz.questions, name: 'Test props'}
+            params: quiz,
           });
         })
         .then(() => console.log("Переход в QizeEditor"))
