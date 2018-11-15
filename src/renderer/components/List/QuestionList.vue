@@ -1,11 +1,13 @@
 <template>
     <div class="list">
-        <div class="questions" 
+        <div class="question" 
             v-for="(item, index) in questions" 
             v-bind:key="item.id"
-            @click="expand"
+           
+            :class="{editing: item==editedQuestion}"
         >
-            <button class="question-accordion">
+          <div class="viev" >
+            <button class="question-accordion" @click="expand">
                 <span class="question-num">{{index+1}}</span>
                 <span class="question-button">{{item.question}}</span>
             </button>
@@ -19,12 +21,21 @@
                         class="question-answer-num"
                         v-bind:class="{questionRightAnswer: (index+1) == item.true_answer}">{{index+1}}</span>
                     <span class="question-answer">{{answer}}</span>
-                    </p>
+                </p>
                 <div class="question-control" >
                     <button class="field_button" @click.stop="edit(index)">Редактировать</button>
                     <button class="field_button" @click.stop="delite(index)">Удалить</button>
                 </div>
             </div>
+          </div>
+          <div class="edit">
+              <p>Режим редактирования</p>
+                <div class="question-control">
+                    <button class="field_button" @click.stop="doneEdit(index)">Сохранить</button>
+                    <button class="field_button" @click.stop="canselEdit(index)">Отмена</button>
+                </div>
+          </div>
+          
         </div>
     </div>    
 </template>
@@ -32,7 +43,7 @@
 <script>
 import style from "./question__list.css";
 
-// TODO: Подготовить два css класса focus и edit. Реализовать подстановку классов 
+// TODO: Подготовить два css класса focus и edit. Реализовать подстановку классов
 // для проигрывания времени и редактирования
 
 // TODO: Реализовать круглый SVG таймер со слайдером выбора времени отображения вопроса
@@ -41,12 +52,13 @@ import style from "./question__list.css";
 
 export default {
   data() {
-    return {};
+    return {
+      editedQuestion: null,
+      beforeEditCache: null
+    };
   },
   props: ["questions"],
-  computed: {
-  
-  },
+  computed: {},
   methods: {
     expand(event) {
       if (event.target) {
@@ -64,6 +76,18 @@ export default {
     },
     edit(id) {
       console.log("hoocked " + id);
+      this.beforeEditCache = this.questions[id];
+      this.editedQuestion = this.questions[id];
+    },
+    doneEdit(id) {
+      this.questions[id] = this.editedQuestion;
+      this.editedQuestion = null;
+      this.beforeEditCache = null;
+    },
+    canselEdit(id) {
+      this.questions[id] = this.beforeEditCache;
+      this.editedQuestion = null;
+      this.beforeEditCache = null;
     },
     delite(id) {
       this.questions.splice(id, 1);

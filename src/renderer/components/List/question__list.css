@@ -111,4 +111,15 @@
     display: flex;
     justify-content: center;
     margin: 10px;
-} 
+}
+.list .editing .viev{
+    display: none;
+}
+.list .editing .edit{
+    display: block;
+    height: 334px;
+    /* padding: 18px 0px; */
+}
+.list div .edit{
+    display: none;
+}
