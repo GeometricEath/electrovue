@@ -12,14 +12,16 @@ import Field from "./Field/Field.vue";
 import List from "./List/QuestionList.vue";
 import Menu from "./Menu/Menu.vue";
 import FileSistem from "../../modules/fileSistem.js";
+import Vue from 'vue';
+import Storage from "./Storage.vue"
 let FS = new FileSistem();
-
-// this.$on('newQuestion', add);
-
+// Vue.prototype.$store= "test string";
+Vue.component('field', Field);
+Vue.use(Storage);
 export default {
   name: "quizeEditor",
   components: {
-    field: Field,
+    // field: Field,
     list: List,
     menus: Menu
   },

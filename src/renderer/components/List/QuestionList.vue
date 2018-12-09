@@ -4,9 +4,8 @@
             v-for="(item, index) in questions" 
             v-bind:key="item.id"
            
-            :class="{editing: item==editedQuestion}"
         >
-          <div class="viev" >
+          <div class="viev" v-if="item!=editedQuestion">
             <button class="question-accordion" @click="expand">
                 <span class="question-num">{{index+1}}</span>
                 <span class="question-button">{{item.question}}</span>
@@ -28,12 +27,10 @@
                 </div>
             </div>
           </div>
-          <div class="edit">
+          <div class="edit" v-if="item==editedQuestion">
               <p>Режим редактирования</p>
-                <div class="question-control">
-                    <button class="field_button" @click.stop="doneEdit(index)">Сохранить</button>
-                    <button class="field_button" @click.stop="canselEdit(index)">Отмена</button>
-                </div>
+              <field v-bind:question_data="item" @cansel="canselEdit(index)"></field>
+             
           </div>
           
         </div>
@@ -42,6 +39,7 @@
 
 <script>
 import style from "./question__list.css";
+// import Field from "../Field/Field.vue"
 
 // TODO: Подготовить два css класса focus и edit. Реализовать подстановку классов
 // для проигрывания времени и редактирования
@@ -51,6 +49,9 @@ import style from "./question__list.css";
 // console.dir(this.$root)
 
 export default {
+  // components: {
+  //   field: Field,
+  // },
   data() {
     return {
       editedQuestion: null,
