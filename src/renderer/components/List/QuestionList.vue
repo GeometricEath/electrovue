@@ -29,7 +29,7 @@
           </div>
           <div class="edit" v-if="item==editedQuestion">
               <p>Режим редактирования</p>
-              <field v-bind:question_data="item" @cansel="canselEdit(index)"></field>
+              <field v-bind:question_data="item" @cansel="canselEdit(index)" @newQuestion="doneEdit()"></field>
              
           </div>
           
@@ -79,16 +79,20 @@ export default {
       console.log("hoocked " + id);
       this.beforeEditCache = this.questions[id];
       this.editedQuestion = this.questions[id];
+      this.$emit("editing", id);
+      
     },
     doneEdit(id) {
       this.questions[id] = this.editedQuestion;
       this.editedQuestion = null;
       this.beforeEditCache = null;
+      this.$emit('doneEdit');
     },
     canselEdit(id) {
       this.questions[id] = this.beforeEditCache;
       this.editedQuestion = null;
       this.beforeEditCache = null;
+      this.$emit('canselEdit');
     },
     delite(id) {
       this.questions.splice(id, 1);
