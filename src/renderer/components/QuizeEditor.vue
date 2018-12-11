@@ -1,9 +1,9 @@
 <template>
   <div class="editor">
-  <menus @save='save' v-bind:totalTime="totalTime"></menus>
-  <div class="title">{{name}}</div>
-  <list v-bind:questions="questions_array"></list>
-  <field v-on:newQuestion='add'></field>
+    <menus @save="save" v-bind:totalTime="totalTime"></menus>
+    <div class="title">{{name}}</div>
+    <list v-bind:questions="questions_array" @editing="state" @doneEdit="state" @canselEdit="state"></list>
+    <field v-on:newQuestion="add" v-if="!editing"></field>
   </div>
 </template>
 
@@ -12,10 +12,10 @@ import Field from "./Field/Field.vue";
 import List from "./List/QuestionList.vue";
 import Menu from "./Menu/Menu.vue";
 import FileSistem from "../../modules/fileSistem.js";
+import Vue from "vue";
 let FS = new FileSistem();
-
-// this.$on('newQuestion', add);
-
+// Vue.prototype.$store= "test string";
+Vue.component("field", Field);
 export default {
   name: "quizeEditor",
   components: {
@@ -25,10 +25,11 @@ export default {
   },
   data() {
     return {
-      questions_array: this.questions
+      questions_array: this.questions,
+      editing: false
     };
   },
-  created(){
+  created() {
     // `this` указывает на экземпляр vm
     // console.log("Значение a: " + this.a);
     // questions_array.map()
@@ -75,6 +76,10 @@ export default {
       // link.href = window.URL.createObjectURL(blob);
       // link.download = "test.txt";
       // link.click();
+    },
+    state() {
+      console.log("editing " + this.editing);
+      return this.editing ? this.editing = false : this.editing = true;
     }
   }
 };

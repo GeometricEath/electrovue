@@ -30,10 +30,8 @@
           </div>
           <div class="edit">
               <p>Режим редактирования</p>
-                <div class="question-control">
-                    <button class="field_button" @click.stop="doneEdit(index)">Сохранить</button>
-                    <button class="field_button" @click.stop="canselEdit(index)">Отмена</button>
-                </div>
+              <field v-bind:question_data="item" @cansel="canselEdit(index)" @newQuestion="doneEdit()"></field>
+             
           </div>
           
         </div>
@@ -78,16 +76,20 @@ export default {
       console.log("hoocked " + id);
       this.beforeEditCache = this.questions[id];
       this.editedQuestion = this.questions[id];
+      this.$emit("editing", id);
+      
     },
     doneEdit(id) {
       this.questions[id] = this.editedQuestion;
       this.editedQuestion = null;
       this.beforeEditCache = null;
+      this.$emit('doneEdit');
     },
     canselEdit(id) {
       this.questions[id] = this.beforeEditCache;
       this.editedQuestion = null;
       this.beforeEditCache = null;
+      this.$emit('canselEdit');
     },
     delite(id) {
       this.questions.splice(id, 1);
