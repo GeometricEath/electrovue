@@ -19,7 +19,7 @@ Vue.component("field", Field);
 export default {
   name: "quizeEditor",
   components: {
-    field: Field,
+    // field: Field,
     list: List,
     menus: Menu
   },
