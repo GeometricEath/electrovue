@@ -14,12 +14,11 @@ import Menu from "./Menu/Menu.vue";
 import FileSistem from "../../modules/fileSistem.js";
 import Vue from "vue";
 let FS = new FileSistem();
-// Vue.prototype.$store= "test string";
+
 Vue.component("field", Field);
 export default {
   name: "quizeEditor",
   components: {
-    // field: Field,
     list: List,
     menus: Menu
   },
@@ -30,10 +29,7 @@ export default {
     };
   },
   created() {
-    // `this` указывает на экземпляр vm
-    // console.log("Значение a: " + this.a);
-    // questions_array.map()
-  },
+ },
   props: {
     name: String,
     questions: {
@@ -64,7 +60,6 @@ export default {
   },
   methods: {
     add(evt) {
-      // console.log(this.questions_array);
       evt.id = this.questions_array.length;
       this.questions_array.push(evt);
     },

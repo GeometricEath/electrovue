@@ -76,19 +76,20 @@ export default {
       }
     },
     edit(id) {
-      console.log("hoocked " + id);
       this.beforeEditCache = this.questions[id];
       this.editedQuestion = this.questions[id];
       this.$emit("editing", id);
       
     },
     doneEdit(id) {
+      console.dir(this.editedQuestion);
       this.questions[id] = this.editedQuestion;
       this.editedQuestion = null;
       this.beforeEditCache = null;
       this.$emit('doneEdit');
     },
     canselEdit(id) {
+      console.dir(this.beforeEditCache);
       this.questions[id] = this.beforeEditCache;
       this.editedQuestion = null;
       this.beforeEditCache = null;

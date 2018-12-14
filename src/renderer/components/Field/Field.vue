@@ -1,5 +1,5 @@
 <template>
-    <form class="field" v-on:submit.prevent='save_Question'>
+    <form class="field" @submit.stop>
         <h2 class="field_header">Добавить вопрос</h2>
 
         <img class="field_load_img" v-bind:src="question_data.img" @click="openImage" >
@@ -46,9 +46,9 @@
             <p class="timeout_value">{{question_data.timeout}}</p>
         </div>
         <div class="field_control">
-        <input type="button" class="field_submit field_button" value="Отправить" @click="save_Question" >
+        <button type="button" class="field_button" @click="save_Question">Отправить</button>
         <button type="reset" class="field_button" v-if="type == 'new' ">Очистить</button>
-        <button class="field_button" v-else @click="cansel">Отмена</button>
+        <button type="button" class="field_button" v-else @click="cansel">Отмена</button>
 
         </div>
     </form>
@@ -73,7 +73,7 @@ export default {
     question_data: {
       type: Object,
       default: function() {
-        console.log("questions objec default");
+        console.log("questions objec default" + this.type);
         this.type = "new"
         return {
           question: "",
@@ -85,22 +85,13 @@ export default {
       }
     }
   },
+
   methods: {
     save_Question: function(event) {
-      //   event.preventDefault();
       this.$emit("newQuestion", this.question_data);
-      console.dir(this.$myStore)
-      // this.question_data = {
-      //   question: "",
-      //   true_answer: "",
-      //   img: "static/assets/no-image-icon.png",
-      //   answers: [],
-      //   timeout: 20
-      // };
       this.$el.scrollIntoView(false);
     },
     openImage() {
-      //   let imageBuff = FS.openImg();
       FS.openImg()
         .then(blobURL => {
           this.question_data.img = blobURL;
@@ -115,13 +106,12 @@ export default {
     questionLenght: function() {
       return this.question_data.question.length;
     }
-    //TODO: ограничение длины вопроса 120 символов
   },
 
   data() {
     return {
       noIconPng: "static/assets/no-image-icon.png",
-      type: "",
+      type: null,
     };
   }
 };
