@@ -17,6 +17,10 @@ function createWindow () {
   /**
    * Initial window options
    */
+  if (process.env.NODE_ENV !== 'production') {
+    require('vue-devtools').install()
+  }
+
   mainWindow = new BrowserWindow({
     height: 563,
     useContentSize: true,
