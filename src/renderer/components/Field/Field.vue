@@ -47,7 +47,7 @@
         </div>
         <div class="field_control">
         <button type="button" class="field_button" @click="save_Question">Отправить</button>
-        <button type="reset" class="field_button" v-if="type == 'new' ">Очистить</button>
+        <button type="reset" class="field_button" v-if="field_data.type == 'new' ">Очистить</button>
         <button type="button" class="field_button" v-else @click="cansel">Отмена</button>
 
         </div>
@@ -74,8 +74,8 @@ export default {
       type: Object,
       default: function() {
         console.log("questions objec default" + this.type);
-        this.type = "new"
         return {
+          type: "new",
           question: "",
           true_answer: "",
           img: "static/assets/no-image-icon.png",
@@ -89,8 +89,10 @@ export default {
   methods: {
     save_Question: function(event) {
       //   event.preventDefault();
+      delete this.field_data.type;
       this.$emit("newQuestion", this.field_data);
       // console.dir(this.$myStore)
+
       this.field_data = {
         question: "",
         true_answer: "",
@@ -121,7 +123,6 @@ export default {
     return {
       field_data: this.question_data,
       noIconPng: "static/assets/no-image-icon.png",
-      type: "new",
     };
   }
 };
