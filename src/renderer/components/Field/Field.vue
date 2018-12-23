@@ -2,7 +2,7 @@
     <form class="field" @submit.stop>
         <h2 class="field_header">Добавить вопрос</h2>
 
-        <img class="field_load_img" v-bind:src="question_data.img" @click="openImage" >
+        <img class="field_load_img" v-bind:src="field_data.img" @click="openImage" >
 
         <textarea class="field_question" 
             name="question" 
@@ -10,40 +10,40 @@
             rows="4" 
             spellcheck 
             autocomplete="off"
-            v-model="question_data.question">
+            v-model="field_data.question">
         </textarea>
         <span v-if="questionLenght>120">Вы слишком многословны, сократите вопрос на {{questionLenght-120}} символов</span>
         <div>
             <div class="roundedOne">
-                <input type="radio" id="roundedOne1" name="true" value="1" v-model="question_data.true_answer"/>
+                <input type="radio" id="roundedOne1" name="true" value="1" v-model="field_data.true_answer"/>
                 <label for="roundedOne1"></label>
             </div>
-            <input name="inp" class="field_answer" id="inp1" placeholder="Вариант ответа 1" type="text" spellcheck autocomplete="off" v-model="question_data.answers[0]">
+            <input name="inp" class="field_answer" id="inp1" placeholder="Вариант ответа 1" type="text" spellcheck autocomplete="off" v-model="field_data.answers[0]">
         </div>    
         <div>  
             <div class="roundedOne">
-                <input type="radio" id="roundedOne2" name="true" value="2" v-model="question_data.true_answer"/>
+                <input type="radio" id="roundedOne2" name="true" value="2" v-model="field_data.true_answer"/>
                 <label for="roundedOne2"></label>
             </div>
-            <input name="inp" class="field_answer" id="inp2" placeholder="Вариант ответа 2" type="text" spellcheck autocomplete="off" v-model="question_data.answers[1]">
+            <input name="inp" class="field_answer" id="inp2" placeholder="Вариант ответа 2" type="text" spellcheck autocomplete="off" v-model="field_data.answers[1]">
         </div>
         <div>
             <div class="roundedOne">
-                <input type="radio" id="roundedOne3" name="true" value="3" v-model="question_data.true_answer"/>
+                <input type="radio" id="roundedOne3" name="true" value="3" v-model="field_data.true_answer"/>
                 <label for="roundedOne3"></label>
             </div>
-            <input name="inp" class="field_answer" id="inp3" placeholder="Вариант ответа 3" type="text" spellcheck autocomplete="off" v-model="question_data.answers[2]">
+            <input name="inp" class="field_answer" id="inp3" placeholder="Вариант ответа 3" type="text" spellcheck autocomplete="off" v-model="field_data.answers[2]">
         </div>
         <div>
             <div class="roundedOne">
-                <input type="radio" id="roundedOne4" name="true" value="4" v-model="question_data.true_answer"/>
+                <input type="radio" id="roundedOne4" name="true" value="4" v-model="field_data.true_answer"/>
                 <label for="roundedOne4"></label>
             </div>
-            <input name="inp" class="field_answer" id="inp4" placeholder="Вариант ответа 4" type="text" spellcheck autocomplete="off" v-model="question_data.answers[3]">
+            <input name="inp" class="field_answer" id="inp4" placeholder="Вариант ответа 4" type="text" spellcheck autocomplete="off" v-model="field_data.answers[3]">
         </div>
         <div>
-            <input class="range-slider__range" type="range" value="20" min="10" max="60" v-model='question_data.timeout'>
-            <p class="timeout_value">{{question_data.timeout}}</p>
+            <input class="range-slider__range" type="range" value="20" min="10" max="60" v-model='field_data.timeout'>
+            <p class="timeout_value">{{field_data.timeout}}</p>
         </div>
         <div class="field_control">
         <button type="button" class="field_button" @click="save_Question">Отправить</button>
@@ -88,13 +88,22 @@ export default {
 
   methods: {
     save_Question: function(event) {
-      this.$emit("newQuestion", this.question_data);
+      //   event.preventDefault();
+      this.$emit("newQuestion", this.field_data);
+      // console.dir(this.$myStore)
+      this.field_data = {
+        question: "",
+        true_answer: "",
+        img: "static/assets/no-image-icon.png",
+        answers: [],
+        timeout: 20
+      };
       this.$el.scrollIntoView(false);
     },
     openImage() {
       FS.openImg()
         .then(blobURL => {
-          this.question_data.img = blobURL;
+          this.field_data.img = blobURL;
         })
         .catch(er => console.error(er));
     },
@@ -104,14 +113,15 @@ export default {
   },
   computed: {
     questionLenght: function() {
-      return this.question_data.question.length;
+      return this.field_data.question.length;
     }
   },
 
   data() {
     return {
+      field_data: this.question_data,
       noIconPng: "static/assets/no-image-icon.png",
-      type: null,
+      type: "new",
     };
   }
 };
