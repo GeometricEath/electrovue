@@ -1,4 +1,5 @@
 # electro-vue
+> This project is not finished. Do not use it.
 
 > An electron-vue project
 
