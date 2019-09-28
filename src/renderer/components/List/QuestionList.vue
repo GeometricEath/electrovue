@@ -76,7 +76,7 @@ export default {
       }
     },
     edit(id) {
-      this.beforeEditCache = this.questions[id];
+      this.beforeEditCache = JSON.parse(JSON.stringify(this.questions[id]));
       this.editedQuestion = this.questions[id];
       this.$emit("editing", id);
       
