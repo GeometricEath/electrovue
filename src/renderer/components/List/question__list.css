@@ -111,4 +111,9 @@
     display: flex;
     justify-content: center;
     margin: 10px;
-} 
+}
+.list .edit{
+    display: block;
+    /* height: 572px; */
+    /* padding: 18px 0px; */
+}
