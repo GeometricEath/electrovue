@@ -2,15 +2,15 @@ import path from 'path';
 import { remote } from 'electron';
 import { createQuize } from "../modules/QuizeBuilder.js";
 import parser from './xmlparser'
-const fs = require('fs');
+// const fs = require('fs');
+const fsPromises = require('fs').promises;
 const util = require('util');
 const mime = require('mime/lite');
-const writeFile = util.promisify(fs.writeFile);
-const mkdir = util.promisify(fs.mkdir);
+// const writeFile = util.promisify(fs.writeFile);
+// const mkdir = util.promisify(fs.mkdir);
 
 export default class FileSistem {
     constructor() {
-
     }
     saveProject(questionsArray, quizeName) {
         let outputPath = remote.dialog.showOpenDialog({
@@ -105,32 +105,78 @@ export default class FileSistem {
         return new Promise(function (resolve, reject) {
             remote.dialog.showOpenDialog(path => {
                 console.log(path);
-                fs.readFile(path[0], (err, data) => {
-                    if (err) {
-                        reject('Ошибка при чтении img ' + err);
-                    }
-                    let arrayBuffer = [];
+                // fs.readFile(path[0], (err, data) => {
+                //     if (err) {
+                //         reject('Ошибка при чтении img ' + err);
+                //     }
+                //     let arrayBuffer = [];
+                //     arrayBuffer.push(data);
+                //     let mimeType = mime.getType(path[0])
+                //     let blob = new Blob(arrayBuffer, { type: mimeType });
+                //     console.log(blob.type);
+                //     resolve(window.URL.createObjectURL(blob));
+                // })
+            })
+        })
+    }
+    readImg(path){
+        console.log(fsPromises);
+        fsPromises.access(path)
+        // .then( (err) => {
+        //     if (err) {
+        //       console.error(err)
+        //       return
+        //     }
+        //     //exists
+            .then(()=>{
+                return fsPromises.readFile(path)
+            })
+            .then(data => {
+                let arrayBuffer = [];
                     arrayBuffer.push(data);
                     let mimeType = mime.getType(path[0])
                     let blob = new Blob(arrayBuffer, { type: mimeType });
                     console.log(blob.type);
                     resolve(window.URL.createObjectURL(blob));
-                })
             })
-        })
-    }
+            .catch(err=>{
+                console.error(err);
+                resolve('static/assets/no-image-icon.png')
+            })
+          }
+    
     openQuiz() {
+        let t = this;
         return new Promise(function (resolve, reject) {
-            remote.dialog.showOpenDialog(path => {
-                console.log(path);
-                fs.readFile(path[0], (err, data) => {
-                    if (err) reject('Ошибка при чтении xml ' + err);
-                    parser.parseXML(data)
-                    .then((quiz)=>{
-                        console.log(quiz);
-                        resolve (quiz);
+            remote.dialog.showOpenDialog(filePath => {
+                // fs.readFile(filePath[0], (err, data) => {
+                //     if (err) reject('Ошибка при чтении xml ' + err);
+                //     parser.parseXML(data)
+                //     .then((quiz)=>{
+                //         quiz.questions.map((question) =>{
+                //             let picURL = filePath[0].slice(0, filePath[0].lastIndexOf('\\')+1)
+                //             + question.pic_path.slice(question.pic_path.lastIndexOf('\\')+1);
+                //             t.readImg(picURL);
+                //             // question.pic_path = ;
+                //         })
+                                                
+                //         resolve (quiz);
 
+                //     })
+                // })
+                console.log(t);
+                t.fsPromises.readFile(filePath[0])
+                .then(data => {
+                    return parser.parseXML(data)
+                })
+                .then((quiz)=>{
+                    quiz.questions.map((question) =>{
+                        let picURL = filePath[0].slice(0, filePath[0].lastIndexOf('\\')+1)
+                        + question.pic_path.slice(question.pic_path.lastIndexOf('\\')+1);
+                        t.readImg(picURL);
+                        // question.pic_path = ;
                     })
+                    resolve (quiz);
                 })
             })
         })
