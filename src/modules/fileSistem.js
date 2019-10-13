@@ -43,12 +43,11 @@ export default class FileSistem {
                 xhr.onload = function (e) {
                     if (this.status == 200) {
                         let blob = this.response;
-                        console.log(blob.type);
                         let reader = new FileReader();
                         reader.readAsArrayBuffer(blob);
                         reader.onloadend = (evt => {
                             let buffer = Buffer.from(new Uint8Array(evt.target.result))
-                            console.log('Чтение блоба' + url);
+                            console.log('Чтение блоба ' + url);
                             resolve({ buffer: buffer, type: blob.type });
                         });
                     } else { reject(Error(xhr.statusText)) }
@@ -64,6 +63,7 @@ export default class FileSistem {
             })
             .then(() => console.log('End'))
             .then(() => {
+                console.dir(questionsArray);
                 let xmlData = createQuize(questionsArray, quizeName);
                 let xmlPath = path.join(projectPath, 'quize.xml')
                 return writeFile(xmlPath, xmlData);
