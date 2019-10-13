@@ -98,6 +98,9 @@ export default {
     delite(id) {
       this.questions.splice(id, 1);
     }
+  },
+  watch: {
   }
+
 };
 </script>

@@ -13,7 +13,6 @@ class Parser {
         return new Promise((resolve, reject) => {
             parser.parseString(xml, (err, result) => {
                 if (err) reject(err);
-                console.dir(result);
                 let json = result.root.questions[0].group[0].question;
                 let quizName = result.root.quizes["0"].quiz["0"].$.name;
                 let id = 0;
