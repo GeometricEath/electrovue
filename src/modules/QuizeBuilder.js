@@ -34,7 +34,7 @@ function createQuize(questions, quizName) {
             ar.push({
                 question: {
                     "@groupName": "Group0",
-                    "@questionName": "Question" + (i)
+                    "@questionName": "Question" + (questions[i].id)
                 }
             });
         }
