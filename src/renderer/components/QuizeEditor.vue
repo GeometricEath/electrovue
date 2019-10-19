@@ -47,7 +47,7 @@ export default {
       let seconds = 0;
       let result = 0;
       this.questions_array.forEach(element => {
-        totalTime = totalTime + parseInt(element.timeout);
+        totalTime = totalTime + parseInt(element.timeout + 3);
       });
       result = totalTime + " сек";
       if (totalTime > 60) {
