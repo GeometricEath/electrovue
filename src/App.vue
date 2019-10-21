@@ -1,7 +1,4 @@
 <template>
-  <!-- <div id="app">
-    <router-view></router-view>
-  </div> -->
   <v-app>
     <v-app-bar app>
       <v-toolbar-title class="headline text-uppercase">
@@ -19,17 +16,21 @@
     </v-app-bar>
 
     <v-content>
-      <!-- <HelloWorld/> -->
+      <HelloWorld/>
     </v-content>
   </v-app>
 </template>
 
 <script>
+import HelloWorld from './components/HelloWorld';
+
 export default {
-  name: "electro-vue"
+  name: 'App',
+  components: {
+    HelloWorld,
+  },
+  data: () => ({
+    //
+  }),
 };
 </script>
-
-<style>
-/* CSS */
-</style>
