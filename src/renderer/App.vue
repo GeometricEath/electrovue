@@ -25,6 +25,8 @@
 </template>
 
 <script>
+ import { VApp, VAppBar,VToolbar } from 'vuetify/lib'
+
 export default {
   name: "electro-vue"
 };
